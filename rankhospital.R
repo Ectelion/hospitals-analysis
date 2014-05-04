@@ -56,7 +56,6 @@ rankhospital <- function(state, outcome, num = "best") {
 	} else {
 		## In this case num expected to be an integer number indicating the rank
 		if (num <= nrow(stateDataOmitted)) {
-			#stateDataOmitted
 			cols <- colnames(stateDataOmitted);
 			sortedData <- stateDataOmitted[order(stateDataOmitted[cols[1]], stateDataOmitted[cols[2]]), ]
 			sortedData [num, 2]
