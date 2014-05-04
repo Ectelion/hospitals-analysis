@@ -75,4 +75,4 @@ rankhospital <- function(state, outcome, num = "best") {
 ## + rankhospital("MD", "heart attack", "worst")
 ## + rankhospital("MN", "heart attack", 5000)
 ## + rankhospital("TX", "heart failure", 4)
-## All passed!
+## + All passed
