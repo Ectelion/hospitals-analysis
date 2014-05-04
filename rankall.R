@@ -65,7 +65,6 @@ rankall <- function(outcome, num = "best") {
 		}
 	)
 	
-
 	## Return a data frame with the hospital names and the (abbreviated) state name
 	data.frame(hospital=hospitals, state=states)
 }
@@ -74,4 +73,7 @@ rankall <- function(outcome, num = "best") {
 ## + head(rankall("heart attack", 20), 10)
 ## + tail(rankall("pneumonia", "worst"), 3)
 ## + tail(rankall("heart failure"), 10)
+## + rankall("heart attack", 4)
+## + rankall("pneumonia", "worst") 
+## + rankall("heart failure", 10)
 ## + All passed
