@@ -1,7 +1,7 @@
 ## The function reads the "Outcome-of-care-measures" dataset and returns 
 ## a character vector with the name of the hospital that has the ranking 
 ## specified by the num argument. The num argument can take values "best", 
-"worst", or an integer indicating the ranking (smaller number - higher rank)
+## "worst", or an integer indicating the ranking (smaller number - higher rank)
 
 rankhospital <- function(state, outcome, num = "best") {
 	## Read outcome data
@@ -33,25 +33,36 @@ rankhospital <- function(state, outcome, num = "best") {
 	}
 	
 	## Shrink data to the observed state
-	stateData <- data[data$State==state, c(hospitalCol, deathReasonPctCol)]
+	stateData <- data[data$State==state, c(deathReasonPctCol, hospitalCol)]
 	
 	## Parsing death reason percentage column to integer
-	suppressWarnings(stateData [, 2] <- as.numeric(stateData [, 2]))
-	stateDataOmitted <- stateData[!is.na(stateData[2]), c(1, 2)]
+	suppressWarnings(stateData [, 1] <- as.numeric(stateData [, 1]))
+	stateDataOmitted <- stateData[!is.na(stateData[1]), c(1, 2)]
 	
 	if (num=="best") {
-		minVal <- min(stateDataOmitted [, 2])
-		## if there are other mins, break the ties lexicographically
-		bestHospitals <- stateDataOmitted[stateDataOmitted[, 2]==minVal, c(1, 2)]
-		best <- min(bestHospitals[, 1])
+		minVal <- min(stateDataOmitted [, 1])
+		## If there are other mins, break the ties lexicographically
+		bestHospitals <- stateDataOmitted[stateDataOmitted[, 1]==minVal, c(1, 2)]
+		best <- min(bestHospitals[, 2])
 		best
 	} 
 	else if (num=="worst") {
-		maxVal <- max(stateDataOmitted [, 2])
-		## if there are other hospitals with the max value, 
+		maxVal <- max(stateDataOmitted [, 1])
+		## If there are other hospitals with the max value, 
 		## break the ties lexicographically
-		worstHospitals <- stateDataOmitted[stateDataOmitted[, 2]==maxVal, c(1, 2)]
-		worst <- max(bestHospitals[, 1])
+		worstHospitals <- stateDataOmitted[stateDataOmitted[, 1]==maxVal, c(1, 2)]
+		worst <- max(worstHospitals[, 2])
 		worst
+	} else {
+		## In this case num expected to be an integer number indicating the rank
+		if (num <= nrow(stateDataOmitted)) {
+			#stateDataOmitted
+			cols <- colnames(stateDataOmitted);
+			sortedData <- stateDataOmitted[order(stateDataOmitted[cols[1]], stateDataOmitted[cols[2]]), ]
+			sortedData [num, 2]
+		}
+		else {
+			NA
+		}
 	}
 }
