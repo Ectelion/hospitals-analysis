@@ -19,5 +19,39 @@ rankhospital <- function(state, outcome, num = "best") {
 	}	
 
 	## Return hospital name in that state with the given rank 30-day death rate
+	## Find hospital name in that state with lowest 30-day death rate
+	## Columns
+	hospitalCol <- 2
+	stateCol <- 7
+	deathReasonPctCol <- 23 # Pneumonia column by default
 	
+	if (outcome=="heart attack") {
+		deathReasonPctCol <- 11	
+	}
+ 	else if (outcome=="heart failure") {
+		deathReasonPctCol <- 17
+	}
+	
+	## Shrink data to the observed state
+	stateData <- data[data$State==state, c(hospitalCol, deathReasonPctCol)]
+	
+	## Parsing death reason percentage column to integer
+	suppressWarnings(stateData [, 2] <- as.numeric(stateData [, 2]))
+	stateDataOmitted <- stateData[!is.na(stateData[2]), c(1, 2)]
+	
+	if (num=="best") {
+		minVal <- min(stateDataOmitted [, 2])
+		## if there are other mins, break the ties lexicographically
+		bestHospitals <- stateDataOmitted[stateDataOmitted[, 2]==minVal, c(1, 2)]
+		best <- min(bestHospitals[, 1])
+		best
+	} 
+	else if (num=="worst") {
+		maxVal <- max(stateDataOmitted [, 2])
+		## if there are other hospitals with the max value, 
+		## break the ties lexicographically
+		worstHospitals <- stateDataOmitted[stateDataOmitted[, 2]==maxVal, c(1, 2)]
+		worst <- max(bestHospitals[, 1])
+		worst
+	}
 }
