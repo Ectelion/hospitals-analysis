@@ -37,7 +37,7 @@ rankall <- function(outcome, num = "best") {
 	splitByStates <- split(dataOmitted, dataOmitted$State) 
 	hospitals <- character();
 	states <- character();
-
+	## Iterate through the states and compose rankings
 	stateHospitalMapping <- lapply(splitByStates, 
 		function(state) {
 			val <- NA
