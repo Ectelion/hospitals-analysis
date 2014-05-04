@@ -13,13 +13,13 @@ best <- function(state, outcome) {
 	## Check that the state argument is valid
 	states <- unique(data$State)
 	if (!state %in% states) {
-		stop("invalid state");
+		stop("invalid state")
 	}
 	
 	## Check that the outcome argument is valid
 	validOutcomes <- c("heart attack", "heart failure", "pneumonia");
 	if (!outcome %in% validOutcomes) {
-		stop("invalid outcome");			
+		stop("invalid outcome")			
 	}
 	
 	## Find hospital name in that state with lowest 30-day death rate
@@ -29,10 +29,10 @@ best <- function(state, outcome) {
 	deathReasonPctCol <- 23 # Pneumonia column by default
 	
 	if (outcome=="heart attack") {
-		deathReasonPctCol <- 11;	
+		deathReasonPctCol <- 11	
 	}
  	else if (outcome=="heart failure") {
-		deathReasonPctCol <- 17;
+		deathReasonPctCol <- 17
 	}
 	
 	## Shrink data to the observed state
